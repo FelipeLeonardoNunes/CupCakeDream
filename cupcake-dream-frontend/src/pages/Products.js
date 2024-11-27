@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Container, Image, Modal, Button, Input, Icon } from 'semantic-ui-react';
+import { Card, Container, Image, Modal, Button, Input, Icon, Segment } from 'semantic-ui-react';
 import '../css/Styles.css'; // Certifique-se de que o caminho está correto
 
 const Products = ({ isLoggedIn, userInfo }) => {
@@ -22,6 +22,22 @@ const Products = ({ isLoggedIn, userInfo }) => {
 
     fetchProdutos();
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn && userInfo) {
+      const fetchFavorites = async () => {
+        try {
+          const response = await axios.get(`https://localhost:44333/api/Favorite/GetFavoriteByUserId?userId=${userInfo.id}`);
+          const favoriteProductIds = response.data.$values.map(fav => fav.productId);
+          setFavorites(favoriteProductIds);
+        } catch (err) {
+          console.error('Erro ao buscar favoritos:', err);
+        }
+      };
+
+      fetchFavorites();
+    }
+  }, [isLoggedIn, userInfo]);
 
   const getImageUrl = (productId) => {
     const imageMap = {
@@ -74,11 +90,41 @@ const Products = ({ isLoggedIn, userInfo }) => {
     }
   };
 
+  const handleAddToCart = async () => {
+    if (!isLoggedIn || !userInfo) {
+      alert('Você precisa estar logado para adicionar produtos ao carrinho.');
+      return;
+    }
+
+    if (quantity < 1) {
+      alert('Por favor, insira uma quantidade válida.');
+      return;
+    }
+
+    const payload = {
+      userId: userInfo.id,
+      productId: selectedProduct.id,
+      productName: selectedProduct.name,
+      price: selectedProduct.price,
+      quantity: quantity
+    };
+
+    try {
+      await axios.post('https://localhost:44333/api/Cart/AddProductCart', payload);
+      alert('Produto adicionado ao carrinho com sucesso!');
+      handleClose();
+    } catch (err) {
+      console.error('Erro ao adicionar produto ao carrinho:', err);
+      alert('Erro ao adicionar produto ao carrinho. Por favor, tente novamente.');
+    }
+  };
+
   return (
     <Container style={{ marginTop: '18px' }}>
       <h1 className='quicksand-font'>Nossos Produtos</h1>
-      <p>Descubra os incriveis sabores que preparamos para você! Clique no Cupcake para encomendar ou saber mais.</p>
+      <p style={{ fontSize: '1.2rem', lineHeight: '1.6', margin: '0 auto' }} className='quicksand-font'>Descubra os incriveis sabores que preparamos para você! Clique no Cupcake para encomendar ou saber mais.</p>
       <div className='ui divider' style={{ marginTop: '20px', marginBottom: '20px' }}></div>
+      <Segment>
       <Card.Group itemsPerRow={3}>
         {produtos.map(produto => (
           <Card key={produto.id} className="product-card" onClick={() => handleCardClick(produto)}>
@@ -107,6 +153,7 @@ const Products = ({ isLoggedIn, userInfo }) => {
           </Card>
         ))}
       </Card.Group>
+      </Segment>
 
       {selectedProduct && (
         <Modal open={open} onClose={handleClose}>
@@ -122,14 +169,14 @@ const Products = ({ isLoggedIn, userInfo }) => {
               <Input 
                 type='number' 
                 value={quantity} 
-                onChange={(e) => setQuantity(e.target.value)} 
+                onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))} 
                 min='1' 
               />
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
             <Button onClick={handleClose}>Cancelar</Button>
-            <Button primary>Adicionar ao carrinho</Button>
+            <Button primary onClick={handleAddToCart}>Adicionar ao carrinho</Button>
           </Modal.Actions>
         </Modal>
       )}

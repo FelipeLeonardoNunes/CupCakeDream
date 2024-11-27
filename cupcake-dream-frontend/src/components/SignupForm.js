@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Form, Message } from 'semantic-ui-react';
+import { Button, Form, Message, Container, Grid, Segment } from 'semantic-ui-react';
 import axios from 'axios';
+import InputMask from 'react-input-mask';
 
-const SignupForm = () => {
+const SignupForm = ({ onLogin }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,11 +24,22 @@ const SignupForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleMaskedChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handleSubmit = async () => {
     try {
-      await axios.post('/api/User/CreateUser', formData);
+      await axios.post('https://localhost:44333/api/User/CreateUser', formData);
       setSuccess(true);
       setError('');
+
+      // Realizar login após criação bem-sucedida
+      const loginResponse = await axios.post(
+        `https://localhost:44333/api/User/Login?Email=${formData.email}&Password=${formData.password}`
+      );
+      onLogin(true, loginResponse.data);
     } catch (err) {
       setError('Erro ao criar usuário. Tente novamente.');
       setSuccess(false);
@@ -35,88 +47,129 @@ const SignupForm = () => {
   };
 
   return (
-    <Form success={success} error={!!error} onSubmit={handleSubmit}>
-      <Form.Input
-        label="Nome"
-        placeholder="Seu nome"
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        required
-      />
-      <Form.Input
-        label="Email"
-        placeholder="Seu email"
-        name="email"
-        type="email"
-        value={formData.email}
-        onChange={handleChange}
-        required
-      />
-      <Form.Input
-        label="Senha"
-        placeholder="Sua senha"
-        name="password"
-        type="password"
-        value={formData.password}
-        onChange={handleChange}
-        required
-      />
-      <Form.Input
-        label="Telefone"
-        placeholder="Seu telefone"
-        name="phone"
-        value={formData.phone}
-        onChange={handleChange}
-        required
-      />
-      <Form.Input
-        label="Endereço"
-        placeholder="Seu endereço"
-        name="address"
-        value={formData.address}
-        onChange={handleChange}
-        required
-      />
-      <Form.Input
-        label="Cidade"
-        placeholder="Sua cidade"
-        name="city"
-        value={formData.city}
-        onChange={handleChange}
-        required
-      />
-      <Form.Input
-        label="Estado"
-        placeholder="Sua região/estado"
-        name="region"
-        value={formData.region}
-        onChange={handleChange}
-        required
-      />
-      <Form.Input
-        label="CPF"
-        placeholder="Seu CPF"
-        name="cpf"
-        value={formData.cpf}
-        onChange={handleChange}
-        required
-      />
-      <Form.Input
-        label="CEP"
-        placeholder="Seu código postal"
-        name="postalCode"
-        value={formData.postalCode}
-        onChange={handleChange}
-        required
-      />
-      {/* O campo "role" já é definido como "User" no estado, por isso não será exibido para o usuário */}
-      <Button primary type="submit">
-        Cadastrar
-      </Button>
-      {success && <Message success content="Usuário criado com sucesso!" />}
-      {error && <Message error content={error} />}
-    </Form>
+    <Container style={{ marginTop: '30px' }}>
+      <Segment>
+        <Form success={success} error={!!error} onSubmit={handleSubmit}>
+          <Grid>
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <Form.Input
+                  label='Nome'
+                  name='name'
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </Grid.Column>
+              <Grid.Column>
+                <Form.Input
+                  label='Email'
+                  name='email'
+                  type='email'
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <Form.Input
+                  label='Senha'
+                  type='password'
+                  name='password'
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </Grid.Column>
+              <Grid.Column>
+                <Form.Field required>
+                  <label>Telefone</label>
+                  <InputMask
+                    mask="(99) 99999-9999"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleMaskedChange}
+                  >
+                    {(inputProps) => <Form.Input {...inputProps} />}
+                  </InputMask>
+                </Form.Field>
+              </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <Form.Input
+                  label='Endereço'
+                  name='address'
+                  value={formData.address}
+                  onChange={handleChange}
+                  required
+                />
+              </Grid.Column>
+              <Grid.Column>
+                <Form.Input
+                  label='Cidade'
+                  name='city'
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                />
+              </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <Form.Input
+                  label='Estado'
+                  name='region'
+                  value={formData.region}
+                  onChange={handleChange}
+                  maxLength={2}
+                  required
+                />
+              </Grid.Column>
+              <Grid.Column>
+                <Form.Field required>
+                  <label>CPF</label>
+                  <InputMask
+                    mask="999.999.999-99"
+                    name="cpf"
+                    value={formData.cpf}
+                    onChange={handleMaskedChange}
+                  >
+                    {(inputProps) => <Form.Input {...inputProps} />}
+                  </InputMask>
+                </Form.Field>
+              </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <Form.Field required>
+                  <label>CEP</label>
+                  <InputMask
+                    mask="99999-999"
+                    name="postalCode"
+                    value={formData.postalCode}
+                    onChange={handleMaskedChange}
+                  >
+                    {(inputProps) => <Form.Input {...inputProps} />}
+                  </InputMask>
+                </Form.Field>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          <Button primary type='submit'>
+            Cadastrar
+          </Button>
+          {success && <Message success content='Usuário criado com sucesso!' />}
+          {error && <Message error content={error} />}
+        </Form>
+      </Segment>
+    </Container>
   );
 };
 
