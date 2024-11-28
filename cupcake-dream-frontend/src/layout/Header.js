@@ -23,6 +23,11 @@ function Header({ isLoggedIn, handleLogout, openLoginModal, userInfo, children }
             <Menu.Menu position="right">
               {isLoggedIn ? (
                 <>
+                  {userInfo.role === 'Admin' && (
+                    <Menu.Item as={Link} to="/Admin">
+                      Admin
+                    </Menu.Item>
+                  )}
                   <Menu.Item>
                     Olá, {userInfo.name}
                   </Menu.Item>
@@ -43,8 +48,6 @@ function Header({ isLoggedIn, handleLogout, openLoginModal, userInfo, children }
           </Container>
         </Menu>
       </div>
-      <div>{children}</div>
-      <Footer />
     </>
   );
 }

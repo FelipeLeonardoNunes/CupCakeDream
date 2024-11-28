@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, Container, Image, Modal, Button, Input, Icon, Segment } from 'semantic-ui-react';
-import '../css/Styles.css'; // Certifique-se de que o caminho está correto
+import '../css/Styles.css'; 
 
 const Products = ({ isLoggedIn, userInfo }) => {
   const [produtos, setProdutos] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [favorites, setFavorites] = useState([]); // Estado para armazenar favoritos
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     const fetchProdutos = async () => {
       try {
         const response = await axios.get('https://localhost:44333/api/Product/GetAll');
-        setProdutos(response.data.$values);
+        setProdutos(response.data.$values.filter(produto => produto.status));
       } catch (err) {
         console.error('Erro ao buscar produtos:', err);
       }
@@ -136,7 +136,7 @@ const Products = ({ isLoggedIn, userInfo }) => {
                   name={favorites.includes(produto.id) ? 'heart' : 'heart outline'}
                   color={favorites.includes(produto.id) ? 'red' : 'grey'}
                   onClick={(e) => {
-                    e.stopPropagation(); // Evita que o clique no ícone abra o modal
+                    e.stopPropagation(); 
                     toggleFavorite(produto.id);
                   }}
                   style={{ marginLeft: '10px', cursor: 'pointer' }}

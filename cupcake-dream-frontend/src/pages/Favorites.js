@@ -32,7 +32,7 @@ const Favorites = ({ userInfo }) => {
         const response = await axios.get('https://localhost:44333/api/Product/GetAll');
         const allProducts = response.data.$values;
         const favoriteProducts = allProducts.filter(product => 
-          favoritos.some(favorite => favorite.productId === product.id)
+          favoritos.some(favorite => favorite.productId === product.id && product.status)
         );
         setProdutos(favoriteProducts);
       } catch (err) {

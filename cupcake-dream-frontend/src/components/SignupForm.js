@@ -3,7 +3,7 @@ import { Button, Form, Message, Container, Grid, Segment } from 'semantic-ui-rea
 import axios from 'axios';
 import InputMask from 'react-input-mask';
 
-const SignupForm = ({ onLogin }) => {
+const SignupForm = ({ onSignupSuccess }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,16 +31,15 @@ const SignupForm = ({ onLogin }) => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post('https://localhost:44333/api/User/CreateUser', formData);
+      const response = await axios.post('https://localhost:44333/api/User/CreateUser', formData);
+      console.log('Resposta da criação de usuário:', response.data); // Verificar a resposta da API no console
       setSuccess(true);
       setError('');
-
-      // Realizar login após criação bem-sucedida
-      const loginResponse = await axios.post(
-        `https://localhost:44333/api/User/Login?Email=${formData.email}&Password=${formData.password}`
-      );
-      onLogin(true, loginResponse.data);
+      
+      // Notificar sucesso e abrir modal de login
+      onSignupSuccess();
     } catch (err) {
+      console.error('Erro na criação de usuário:', err); // Ver detalhes do erro no console
       setError('Erro ao criar usuário. Tente novamente.');
       setSuccess(false);
     }

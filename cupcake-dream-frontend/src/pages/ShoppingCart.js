@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Image, Table, Button, Segment, Icon, Modal, Form, Dropdown } from 'semantic-ui-react';
-import emptyCart from '../images/empty-shoppingcart.png';
+import emptyCart from '../images/empty-shoppingcart-removebg.png';
 import muffin from '../images/sitting-muffing-removebg.png';
 import { v4 as uuidv4 } from 'uuid';
 
