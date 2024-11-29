@@ -1,10 +1,16 @@
-import React from 'react';
-import { Menu, Container, Button, Icon } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Menu, Container, Button, Icon, Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import '../css/Styles.css'; // Certifique-se de que o caminho está correto
 import Footer from './Footer';
+import LoginForm from '../components/LoginForm';
 
-function Header({ isLoggedIn, handleLogout, openLoginModal, userInfo, children }) {
+function Header({ isLoggedIn, handleLogout, onLogin, userInfo, children }) {
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+
+  const handleLoginModalOpen = () => setLoginModalOpen(true);
+  const handleLoginModalClose = () => setLoginModalOpen(false);
+
   return (
     <>
       <div className="menu-header">
@@ -14,11 +20,11 @@ function Header({ isLoggedIn, handleLogout, openLoginModal, userInfo, children }
               Cupcake Dream
             </Menu.Item>
 
-            <Menu.Item as={Link} to="/Produtos">Produtos</Menu.Item>
-            <Menu.Item as={Link} to="/Favoritos">Favoritos</Menu.Item>
-            <Menu.Item as={Link} to="/Perfil">Perfil</Menu.Item>
-            <Menu.Item as={Link} to="/Carrinho">Carrinho</Menu.Item>
-            <Menu.Item as={Link} to="/Pedidos">Pedidos</Menu.Item>
+            <Menu.Item className='quicksand-font' as={Link} to="/Produtos">Catálogo</Menu.Item>
+            <Menu.Item className='quicksand-font' as={Link} to="/Favoritos">Favoritos</Menu.Item>
+            <Menu.Item className='quicksand-font' as={Link} to="/Perfil">Perfil</Menu.Item>
+            <Menu.Item className='quicksand-font' as={Link} to="/Carrinho">Carrinho</Menu.Item>
+            <Menu.Item className='quicksand-font' as={Link} to="/Pedidos">Pedidos</Menu.Item>
 
             <Menu.Menu position="right">
               {isLoggedIn ? (
@@ -39,7 +45,7 @@ function Header({ isLoggedIn, handleLogout, openLoginModal, userInfo, children }
                 </>
               ) : (
                 <Menu.Item>
-                  <Button onClick={openLoginModal}>
+                  <Button onClick={handleLoginModalOpen}>
                     <Icon name="sign in" /> Entrar
                   </Button>
                 </Menu.Item>
@@ -48,6 +54,16 @@ function Header({ isLoggedIn, handleLogout, openLoginModal, userInfo, children }
           </Container>
         </Menu>
       </div>
+      
+      <Modal open={loginModalOpen} onClose={handleLoginModalClose}>
+        <Modal.Header>Login</Modal.Header>
+        <Modal.Content>
+          <LoginForm onLogin={onLogin} closeModal={handleLoginModalClose} />
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={handleLoginModalClose}>Cancelar</Button>
+        </Modal.Actions>
+      </Modal>
     </>
   );
 }

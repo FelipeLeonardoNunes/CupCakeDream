@@ -29,7 +29,16 @@ const ManageProducts = () => {
   };
 
   const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
+  const handleClose = () => {
+    setModalOpen(false);
+    setFormData({
+      name: '',
+      description: '',
+      image: '',
+      information: '',
+      price: 0
+    });
+  };
 
   const handleEditOpen = (product) => {
     setSelectedProduct(product);

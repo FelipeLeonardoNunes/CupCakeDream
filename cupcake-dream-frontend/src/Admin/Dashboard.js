@@ -38,7 +38,7 @@ const Dashboard = () => {
                   </Card.Description>
                 </Card.Content>
               </Card>
-              <Card>
+              <Card onClick={() => navigate('/Gerenciamento')}>
                 <Card.Content>
                   <Icon name='users' size='large' />
                   <div className='ui divider'></div>

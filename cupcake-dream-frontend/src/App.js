@@ -12,6 +12,7 @@ import OrderDetails from './Admin/OrderDetails';
 import Footer from './layout/Footer'; // Adicione a importação do Footer
 import './css/Styles.css';
 import ManageProducts from './Admin/ManageProducts';
+import ManageUsers from './Admin/ManageUsers';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,7 +31,7 @@ const App = () => {
   return (
     <Router>
       <div id="root">
-        <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} userInfo={userInfo} />
+        <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} onLogin={handleLogin} userInfo={userInfo} />
         <div className="main-content">
           <Routes>
             <Route path="/" element={<LandingPage onLogin={handleLogin} isLoggedIn={isLoggedIn} />} />
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/Admin" element={isLoggedIn ? <Dashboard userInfo={userInfo} /> : <Navigate to="/" />} />
             <Route path="/Ordens" element={isLoggedIn ? <OrderDetails userInfo={userInfo} /> : <Navigate to="/" />} />
             <Route path="/Catalogo" element={isLoggedIn ? <ManageProducts userInfo={userInfo} /> : <Navigate to="/" />} />
+            <Route path="/Gerenciamento" element={isLoggedIn ? <ManageUsers userInfo={userInfo} /> : <Navigate to="/" />} />
           </Routes>
         </div>
         <Footer />

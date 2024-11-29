@@ -45,21 +45,6 @@ const Favorites = ({ userInfo }) => {
     }
   }, [favoritos]);
 
-  const getImageUrl = (productId) => {
-    const imageMap = {
-      '1fbf4050-d201-44be-a350-08dd0daab58b': 'https://i.ibb.co/cC9fBqC/Cupcake-de-avel.jpg',
-      '86bf21f2-f18a-4c50-a351-08dd0daab58b': 'https://i.ibb.co/4ZCbKVR/Cupcake-de-Cereja.jpg',
-      'd0aa7c5b-c5e4-4148-a352-08dd0daab58b': 'https://i.ibb.co/ggPwjj7/Cupcake-Classico.jpg',
-      'b33378f2-beb1-4d8f-a353-08dd0daab58b': 'https://i.ibb.co/61tppgH/Cupcake-de-Chocolate.jpg',
-      '8ffc8a25-c170-4861-a354-08dd0daab58b': 'https://i.ibb.co/hWX4SK8/Cupcake-de-Baunilha.jpg',
-      'f807d643-3766-4428-a355-08dd0daab58b': 'https://i.ibb.co/C0krV4B/Cupcake-de-Morango.jpg',
-      '3969a2cf-81f8-4885-a356-08dd0daab58b': 'https://i.ibb.co/Wy6G4JG/Cupcake-de-Caf.jpg',
-      'e0a81b60-47f5-479b-a357-08dd0daab58b': 'https://i.ibb.co/5BNHGbs/Cupcake-Red-Velvet.jpg'
-    };
-
-    return imageMap[productId] || 'https://i.ibb.co/placeholder.png';
-  };
-
   const handleAddToCartClick = (product) => {
     setSelectedProduct(product);
     setOpen(true);
@@ -138,7 +123,7 @@ const Favorites = ({ userInfo }) => {
         <Card.Group itemsPerRow={3}>
           {produtos.map(produto => (
             <Card key={produto.id} className="product-card">
-              <Image src={getImageUrl(produto.id)} wrapped ui={false} />
+              <Image src={produto.image} wrapped ui={false} />
               <Card.Content>
                 <Card.Header>
                   {produto.name}

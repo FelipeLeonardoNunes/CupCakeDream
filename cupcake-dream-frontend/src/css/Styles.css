@@ -107,3 +107,12 @@ html, body {
   background-color: whitesmoke !important;
 }
 
+/* Estilo para o kicker */
+.kicker {
+  display: block;
+  font-size: 1rem;
+  margin-top: 0.2rem;
+  color: white;
+  font-family: 'Quicksand', sans-serif; /* Certifique-se de que a fonte está correta */
+}
+
