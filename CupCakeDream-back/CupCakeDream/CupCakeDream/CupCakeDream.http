@@ -1,0 +1,6 @@
+@CupCakeDream_HostAddress = http://localhost:5105
+
+GET {{CupCakeDream_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
