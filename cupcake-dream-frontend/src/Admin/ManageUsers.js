@@ -16,7 +16,8 @@ const ManageUsers = () => {
     cpf: '',
     postalCode: '',
     role: '',
-    password: ''
+    password: '',
+    status: true
   });
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
@@ -45,7 +46,8 @@ const ManageUsers = () => {
       cpf: user.cpf,
       postalCode: user.postalCode,
       role: user.role,
-      password: '' // Resetando o password ao abrir o modal de edição
+      password: '',
+      status: user.status // Mantendo o status original
     });
     setPasswordConfirmation('');
     setEditModalOpen(true);

@@ -29,7 +29,19 @@ const SignupForm = ({ onSignupSuccess }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const isPasswordValid = (password) => {
+    const minLength = 8;
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+    return password.length >= minLength && specialCharRegex.test(password);
+  };
+
   const handleSubmit = async () => {
+    if (!isPasswordValid(formData.password)) {
+      setError('A senha deve ter pelo menos 8 caracteres e incluir ao menos 1 caractere especial.');
+      return;
+    }
+
     try {
       const response = await axios.post('https://localhost:44333/api/User/CreateUser', formData);
       console.log('Resposta da criação de usuário:', response.data); // Verificar a resposta da API no console

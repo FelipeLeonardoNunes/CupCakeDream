@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Menu, Container, Button, Icon, Modal } from 'semantic-ui-react';
+import { Menu, Container, Button, Icon, Modal, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import '../css/Styles.css'; // Certifique-se de que o caminho está correto
 import Footer from './Footer';
 import LoginForm from '../components/LoginForm';
+import logo from '../images/Logo-removebg.png'; // Importando a logo
 
 function Header({ isLoggedIn, handleLogout, onLogin, userInfo, children }) {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -16,7 +17,8 @@ function Header({ isLoggedIn, handleLogout, onLogin, userInfo, children }) {
       <div className="menu-header">
         <Menu size="large" borderless>
           <Container>
-            <Menu.Item as={Link} to="/" header className="lobster-font" style={{ fontSize: "2.2rem" }}>
+            <Menu.Item as={Link} to="/" header className="lobster-font" style={{ fontSize: "2.2rem", display: 'flex', alignItems: 'center' }}>
+              <Image src={logo} alt="Cupcake Dream Logo" size='tiny'/>
               Cupcake Dream
             </Menu.Item>
 

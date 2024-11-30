@@ -13,19 +13,26 @@ const LoginForm = ({ onLogin, closeModal }) => {
   const handleSubmit = async () => {
     try {
       const url = `https://localhost:44333/api/User/Login?Email=${encodeURIComponent(credentials.email)}&Password=${encodeURIComponent(credentials.password)}`;
-      console.log('URL de Login:', url); // Verificar o URL que está sendo usado
       const response = await axios.get(url);
-      console.log('Resposta da API:', response.data); // Verificar a resposta da API no console
+      console.log('Login Response:', response.data); // Log da resposta do login
 
       if (response.data && response.data.id) {
-        setError('');
-        onLogin(true, response.data); // Atualiza o estado de login no App e passa as informações do usuário
-        closeModal(); // Fecha o modal de login
+        const userResponse = await axios.get(`https://localhost:44333/api/User/GetUserById?id=${response.data.id}`);
+        console.log('GetUserById Response:', userResponse.data); // Log da resposta do GetUserById
+        const user = userResponse.data;
+
+        if (user.status === false) {
+          setError('O usuário está desativado.');
+        } else {
+          setError('');
+          onLogin(true, user);
+          closeModal();
+        }
       } else {
         setError('Erro ao realizar login. Verifique suas credenciais.');
       }
     } catch (err) {
-      console.error('Erro na requisição:', err); // Ver detalhes do erro no console
+      console.error('Erro na requisição:', err);
       setError('Erro ao realizar login. Verifique suas credenciais.');
     }
   };
