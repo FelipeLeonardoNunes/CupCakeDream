@@ -15,12 +15,12 @@ cd seucaminho/cupcakedream
 
 Instale as dependencias necessarias com NPM Install
 
-Rode o projeto:
-NPM Start
- .
-Informações Extras:
- - Link da Solução em Funcionamento: https://felipeleonardonunes.github.io/cupcake-frontend/#/
+- Rode o projeto:
+- NPM Start
+ 
+ - Informações Extras -
 
+- Link da Solução em Funcionamento: https://felipeleonardonunes.github.io/cupcake-frontend/#/
 - Usuário Admin teste: admin@test.com / password: admin@
 - Linguagem Back-end: .Net
 - Front-end: React.js, semantic-ui-react (biblioteca css)
