@@ -25,3 +25,16 @@ Instale as dependencias necessarias com NPM Install
 - Linguagem Back-end: .Net
 - Front-end: React.js, semantic-ui-react (biblioteca css)
 - Banco de Dados: MS SQL Server
+
+Como rodar o Back-end:
+
+Após o clone, faça download do visual studio.
+
+Navegue até a pasta do diretório e procure pelo arquivo:
+- CupCakeDream.sln
+- Execute o projeto com IIS Express
+
+No console: 
+- update-database
+
+  Pronto!
